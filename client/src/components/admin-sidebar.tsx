@@ -1,5 +1,5 @@
 import { Sidebar, SidebarContent, SidebarFooter } from '@/components/ui/sidebar'
-import { Check, User } from 'lucide-react'
+import { Check, Projector, User } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from './ui/button'
 
@@ -18,6 +18,13 @@ export function AdminSidebar() {
           <Button className="w-full bg-gray-200 text-black hover:text-white">
             <Check size={24} />
             Fraud Check
+          </Button>
+        </Link>
+
+        <Link href="/admin_dashboard/revenue">
+          <Button className="w-full bg-gray-200 text-black hover:text-white">
+            <Projector size={24} />
+            Revenue
           </Button>
         </Link>
       </SidebarContent>

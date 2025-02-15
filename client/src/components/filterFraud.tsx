@@ -1,10 +1,17 @@
 'use client'
 import { useActionState, useState } from 'react'
+import { filterFraudUser } from '../actions/req'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 
-export default function FilterFraud({ __days, __ip_freq } : { __days: number, __ip_freq: number }) {
-  const [state, formAction, pending] = useActionState(searchAction, {})
+export default function FilterFraud({
+  __days,
+  __ip_freq,
+}: {
+  __days: number
+  __ip_freq: number
+}) {
+  const [state, formAction, pending] = useActionState(filterFraudUser, null)
 
   const [days, setDays] = useState(__days)
   const [ip_freq, setIpFreq] = useState(__ip_freq)
@@ -25,7 +32,7 @@ export default function FilterFraud({ __days, __ip_freq } : { __days: number, __
               placeholder="Number of Days..."
               className="bg-transparent rounded-lg w-full ring-0 border focus-visible:ring-offset-0 focus-visible:ring-0"
               value={days}
-              onChange={(e) => setDays(e.target.value)}
+              onChange={(e) => setDays(Number(e.target.value))}
             />
           </div>
         </div>
@@ -40,14 +47,13 @@ export default function FilterFraud({ __days, __ip_freq } : { __days: number, __
               placeholder="IP Frequency..."
               className="bg-transparent rounded-lg w-full ring-0 border focus-visible:ring-offset-0 focus-visible:ring-0"
               value={ip_freq}
-              onChange={(e) => setIpFreq(e.target.value)}
+              onChange={(e) => setIpFreq(Number(e.target.value))}
             />
           </div>
         </div>
 
         <Button
           type="submit"
-          className="w-fit bg-darkb p-4"
           disabled={pending}
         >
           {pending ? 'Searching...' : 'Search'}
