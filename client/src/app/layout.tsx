@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Poppins } from 'next/font/google'
 import './globals.css'
 import Layout from './dashboard/layout'
-import TopNav from './dashboard/top-nav'
+import TopNav from '../components/top-nav'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

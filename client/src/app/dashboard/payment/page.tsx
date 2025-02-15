@@ -1,5 +1,5 @@
-import Layout from "../dashboard/layout";
-import Content from "./payment-form";
+import Content from "@/components/payment-form";
+import Layout from "../layout";
 
 export default function Dashboard() {
   return (
@@ -7,9 +7,7 @@ export default function Dashboard() {
       data-theme="dark"
       className="bg-background text-foreground dark:text-white font-Poppins"
     >
-      <Layout>
-        <Content />
-      </Layout>
+      <Content />
     </div>
   );
 }
