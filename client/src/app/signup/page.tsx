@@ -21,7 +21,6 @@ import { useActionState } from "react"
 
 export default function SignUpPage() {
     const [stage, setStage] = useState<"front" | "back" | "form" | "loading">("front")
-    const [location, setLocation] = useState("")
     const [frontNidCardImage, setFrontNidCardImage] = useState<File | null>(null)
     const [backNidCardImage, setBackNidCardImage] = useState<File | null>(null)
     const [frontPreview, setFrontPreview] = useState<string | null>(null)
@@ -181,8 +180,6 @@ export default function SignUpPage() {
                                                 className="w-full"
                                                 placeholder="mirpur 12, dhaka"
                                                 required
-                                                value={location}
-                                                readOnly
                                             />
 
                                         </div>
@@ -264,14 +261,17 @@ export default function SignUpPage() {
             </div>
             <div className="relative hidden bg-muted lg:block">
                 {stage === "form" ? (
-                    <UnchangeableInfoCard
-                        dob={dob}
-                        fathersName={fathersName}
-                        mothersName={mothersName}
-                        nid={nid}
-                        address={address}
-                        image={croppedFr}
-                    />
+                    <div className="my-auto flex items-center justify-center h-svh">
+                        <UnchangeableInfoCard
+                            dob={dob}
+                            fathersName={fathersName}
+                            mothersName={mothersName}
+                            nid={nid}
+                            address={address}
+                            image={croppedFr}
+                        />
+                    </div>
+
                 ) : (
                     <Image
                         src="/signup_1.svg"

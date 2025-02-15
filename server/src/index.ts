@@ -1,9 +1,24 @@
 import { Hono } from 'hono'
+import auth from './auth'
+import { JwtVariables } from 'hono/jwt'
+import { getConnInfo } from 'hono/cloudflare-workers'
+import { ipRestriction, IPRestrictionRule } from 'hono/ip-restriction'
 
-const app = new Hono()
+type Variables = JwtVariables
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+type Bindings = {
+  DATABASE_URL: string,
+  JWT_SECRET: string,
+  SUPABASE_URL: string,
+  SUPABASE_SERVICE_ROLE_KEY: string
+}
+
+
+const app = new Hono<{ Variables: Variables, Bindings: Bindings }>()
+
+
+app.route('/', auth)
+
+
 
 export default app

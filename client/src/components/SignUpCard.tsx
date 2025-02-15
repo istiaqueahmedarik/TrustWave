@@ -14,7 +14,7 @@ interface UnchangeableInfoProps {
 
 export function UnchangeableInfoCard({ dob, fathersName, mothersName, nid, address, image }: UnchangeableInfoProps) {
     return (
-        <Card className="w-full">
+        <Card className="w-full shadow-none bg-transparent border-0">
             <CardHeader>
                 <CardTitle>Unchangeable Information</CardTitle>
             </CardHeader>
