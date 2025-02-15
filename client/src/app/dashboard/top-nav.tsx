@@ -2,46 +2,25 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/app/dashboard/ui/dropdown-menu";
-import { Bell, ChevronRight, Moon, Sun } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import Profile01 from "./profile-01";
+} from '@/components/ui/dropdown-menu'
+import { Bell, Moon, Sun } from 'lucide-react'
+import Image from 'next/image'
+import Profile01 from './profile-01'
 
 interface BreadcrumbItem {
-  label: string;
-  href?: string;
+  label: string
+  href?: string
 }
 
 export default function TopNav() {
   const breadcrumbs: BreadcrumbItem[] = [
-    { label: "TrustWave", href: "#" },
-    { label: "Dashboard", href: "#" },
-  ];
+    { label: 'TrustWave', href: '/dashboard' },
+    { label: 'Payment', href: '/payment' },
+  ]
 
   return (
     <nav className="px-3 sm:px-6 flex items-center justify-between bg-white dark:bg-[#0F0F12] border-b border-gray-200 dark:border-[#1F1F23] h-full">
-      <div className="font-medium text-sm hidden sm:flex items-center space-x-1 truncate max-w-[300px]">
-        {breadcrumbs.map((item, index) => (
-          <div key={item.label} className="flex items-center">
-            {index > 0 && (
-              <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 mx-1" />
-            )}
-            {item.href ? (
-              <Link
-                href={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <span className="text-gray-900 dark:text-gray-100">
-                {item.label}
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
+      <div className="font-medium text-sm hidden sm:flex items-center space-x-1 truncate max-w-[300px]"></div>
 
       <div className="flex items-center gap-2 sm:gap-4 ml-auto sm:ml-0">
         <button
@@ -80,5 +59,5 @@ export default function TopNav() {
         </DropdownMenu>
       </div>
     </nav>
-  );
+  )
 }
