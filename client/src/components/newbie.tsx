@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Table,
   TableBody,
@@ -18,116 +19,35 @@ interface Participant {
   outgoing: number;
 }
 
-const participants: Participant[] = [
-  {
-    id: 1,
-    position: 1,
-    movement: 2,
-    avatar:
-      "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-02-albo9B0tWOSLXCVZh9rX9KFxXIVWMr.png",
-    name: "Dianne Russell",
-    incoming: 50000,
-    outgoing: 1000,
-  },
-  {
-    id: 2,
-    position: 2,
-    movement: -1,
-    avatar: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-02-albo9B0tWOSLXCVZh9rX9KFxXIVWMr.png",
-    name: "Marvin McKinney",
-    incoming: 45000,
-    outgoing: 1120,
-  },
-  {
-    id: 3,
-    position: 3,
-    movement: 0,
-    avatar: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-02-albo9B0tWOSLXCVZh9rX9KFxXIVWMr.png",
-    name: "Beverly Little",
-    incoming: 40000,
-    outgoing: 1200,
-  },
-  {
-    id: 4,
-    position: 4,
-    movement: 0,
-    avatar: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-02-albo9B0tWOSLXCVZh9rX9KFxXIVWMr.png",
-    name: "Cody Fisher",
-    incoming: 35000,
-    outgoing: 1300,
-  },
-  {
-    id: 5,
-    position: 5,
-    movement: 0,
-    avatar: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-02-albo9B0tWOSLXCVZh9rX9KFxXIVWMr.png",
-    name: "Beverly Little",
-    incoming: 30000,
-    outgoing: 1400,
-  },
-  {
-    id: 9,
-    position: 9,
-    movement: 0,
-    avatar: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-02-albo9B0tWOSLXCVZh9rX9KFxXIVWMr.png",
-    name: "Beverly Little",
-    incoming: 10000,
-    outgoing: 1800,
-  },
-  {
-    id: 10,
-    position: 10,
-    movement: 0,
-    avatar: "https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-02-albo9B0tWOSLXCVZh9rX9KFxXIVWMr.png",
-    name: "Cody Fisher",
-    incoming: 5000,
-    outgoing: 1900,
-  },
-];
 
-export default function LeaderboardTable() {
+export default function LeaderboardTable({ data }: { data: any[] }) {
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow className="text-center items-center justify-center">
             <TableHead className="w-[120px]">Positions</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Incoming</TableHead>
-            <TableHead>Outgoing</TableHead>
+            <TableHead>ID</TableHead>
             <TableHead>Total</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {participants.map((participant) =>
+          {data.map((participant, id) =>
             <TableRow key={participant.id}>
               <TableCell className="font-medium">
                 <div className="flex items-center gap-2">
-                  {participant.position}
+                  {id}
                 </div>
               </TableCell>
-              <TableCell>
+              <TableCell className="font-medium">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full overflow-hidden">
-                    <Image
-                      src={participant.avatar || "/placeholder.svg"}
-                      alt={`${participant.name}'s avatar`}
-                      width={32}
-                      height={32}
-                      className="object-cover"
-                    />
-                  </div>
-                  <span>{participant.name}</span>
+                  {participant.user_id}
                 </div>
               </TableCell>
-              <TableCell className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                {participant.incoming}
-              </TableCell>
-              <TableCell className="text-red-600 dark:text-red-400 font-semibold">
-                {participant.outgoing}
-              </TableCell>
-              <TableCell className="text-blue-500 font-semibold">{participant.incoming + participant.outgoing}</TableCell>
-            </TableRow> 
+
+
+              <TableCell className="text-blue-500 font-semibold">{participant.transaction_count}</TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

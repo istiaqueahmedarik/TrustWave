@@ -3,6 +3,7 @@ import { getConnInfo } from 'hono/cloudflare-workers';
 import { createMiddleware } from 'hono/factory';
 import { ipRestriction, IPRestrictionRule } from 'hono/ip-restriction';
 import { jwt, JwtVariables } from 'hono/jwt';
+import { connect } from 'http2';
 import { isbot } from 'isbot';
 import postgres from 'postgres'
 
