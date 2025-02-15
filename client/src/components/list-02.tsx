@@ -1,3 +1,4 @@
+import { get_with_token } from "@/actions/req"
 import { cn } from "@/lib/utils"
 import {
   ArrowUpRight,
@@ -95,7 +96,20 @@ const TRANSACTIONS: Transaction[] = [
   },
 ]
 
-export default function List02({ transactions = TRANSACTIONS, className }: List02Props) {
+export default async function List02({ className }: List02Props) {
+  const res = await get_with_token('payment/auth/all', false);
+  console.log(res.data.all_transactions);
+  const data: Transaction[] = res.data.all_transactions.map((transaction: any) => {
+    return {
+      id: transaction.user_id,
+      title: transaction.ID,
+      amount: transaction.amount,
+      icon: ShoppingCart,
+      timestamp: transaction.created_at,
+    }
+  });
+  console.log(data);
+  const transactions: Transaction[] = data
   return (
     <div
       className={cn(
@@ -109,10 +123,9 @@ export default function List02({ transactions = TRANSACTIONS, className }: List0
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-            Recent Activity
-            <span className="text-xs font-normal text-zinc-600 dark:text-zinc-400 ml-1">(23 transactions)</span>
+            Recent Activity - Total balance -  {" "}{Math.abs(res.data.balance)} ৳
+            <span className="text-xs font-normal text-zinc-600 dark:text-zinc-400 ml-1">({transactions.length} transactions)</span>
           </h2>
-          <span className="text-xs text-zinc-600 dark:text-zinc-400">This Month</span>
         </div>
 
         <div className="space-y-1">

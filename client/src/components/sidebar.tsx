@@ -84,29 +84,13 @@ export default function Sidebar() {
                   >
                     Dashboard
                   </NavItem>
-                  <NavItem
-                    href="#"
-                    icon={BarChart2}
-                  >
-                    Analytics
-                  </NavItem>
+
                 </div>
 
                 <div className="space-y-1">
+
                   <NavItem
-                    href="/transactions"
-                    icon={Wallet}
-                  >
-                    Transactions
-                  </NavItem>
-                  <NavItem
-                    href="#"
-                    icon={Receipt}
-                  >
-                    Invoices
-                  </NavItem>
-                  <NavItem
-                    href="/payment"
+                    href="/dashboard/payment"
                     icon={CreditCard}
                   >
                     Payments

@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
 import { google } from "@ai-sdk/google";
 import { generateText, Output } from "ai";
 import { z } from "zod";
 
-export async function predict(yVal: number[], xVal: number[], dataDetails: string = "basic y and x values") {
+export async function predict(yVal: number[], xVal: any[], dataDetails: string = "basic y and x values") {
     const y_str = yVal.join(',');
     const x_str = xVal.join(',');
 
