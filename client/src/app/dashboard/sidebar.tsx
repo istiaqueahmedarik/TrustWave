@@ -100,12 +100,6 @@ export default function Sidebar() {
                     Transactions
                   </NavItem>
                   <NavItem
-                    href="#"
-                    icon={Receipt}
-                  >
-                    Invoices
-                  </NavItem>
-                  <NavItem
                     href="/payment"
                     icon={CreditCard}
                   >
