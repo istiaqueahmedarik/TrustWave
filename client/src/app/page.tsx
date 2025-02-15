@@ -1,7 +1,9 @@
-import LoginPage from "./login/page";
+import Tabs from "./transactions/tabs";
 
 export default function Home() {
   return (
-    <LoginPage />
+    <div>
+      <Tabs />
+    </div>
   );
 }
