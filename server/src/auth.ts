@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { getConnInfo } from 'hono/cloudflare-workers';
+import { createMiddleware } from 'hono/factory';
 import { ipRestriction, IPRestrictionRule } from 'hono/ip-restriction';
 import { jwt, JwtVariables } from 'hono/jwt';
 import { isbot } from 'isbot';
@@ -42,7 +43,7 @@ app.use(
     )
 )
 
-app.use('*', async (c, next) => {
+app.use('*', createMiddleware(async (c, next) => {
     const info = getConnInfo(c)
     const ip = info.remote.address || ''
     let val = await c.env.TRUST.get(ip.toString())
@@ -63,7 +64,7 @@ app.use('*', async (c, next) => {
     // }
     console.log(ip, val)
     await next()
-})
+}))
 
 
 
