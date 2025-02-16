@@ -1,6 +1,192 @@
-# Server-Side API Documentation
 
-A server-side API for our app TrustFlow (Financial System)  built with Hono.js, designed for user authentication, transaction management, and administrative operations. Supports JWT-based authentication, IP restrictions, and integrates with PostgreSQL.
+# Client Documentation
+
+## Introduction
+
+Our app TrustWave is a financial system that allows users to register, login, and perform transactions securely. It uses a Next.js frontend with server actions for API requests and a Hono.js backend for authentication and transaction management. The app supports user registration, login, payment processing, and data prediction using AI.
+
+---
+
+## Installation
+
+1. **Go to client**:
+   ```bash
+    cd client
+    ```
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
+3. **Start the development server**:
+    ```bash
+    npm run dev
+    ```
+4. **Open the app**:
+    Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+   
+
+# Server Actions Documentation
+
+We use nextJS server actions as a serverless middleware to handle API requests from the frontend. 
+
+---
+
+## Table of Contents
+- [Authentication](#authentication)
+- [Payment Processing](#payment-processing)
+- [NID Image Processing](#nid-image-processing)
+- [Data Prediction](#data-prediction)
+- [Utility Functions](#utility-functions)
+- [Request Helpers](#request-helpers)
+- [Environment Variables](#environment-variables)
+
+---
+
+## Authentication
+
+### **SignUp**  
+**Route**: `POST /signup`  
+**Parameters** (FormData):
+- `name` (string): User's full name.
+- `email` (string): Valid email address.
+- `password` (string): Minimum 8 characters.
+- `confirmPassword` (string): Must match `password`.
+- `phone` (string): Minimum 10 digits.
+- `dob` (string): Date of birth.
+- `nid` (string): National ID number.
+- `present_address` / `permanentAddress` (string): User addresses.
+- `fathersName` / `mothersName` (string): Parent names.
+- `croppedImage` / `nidImage` (base64): Profile and NID images.  
+
+**Behavior**:  
+- Validates input using Zod schema.
+- Sends data to backend `/signup` endpoint.
+- Redirects to `/login` on success.
+
+---
+
+### **Login**  
+**Route**: `POST /login`  
+**Parameters** (FormData):
+- `email` (string): Registered email.
+- `password` (string): Minimum 8 characters.  
+
+**Behavior**:  
+- Validates credentials.
+- Sends request to backend `/login` endpoint.
+- Stores JWT token in cookies on success.
+- Redirects to `/dashboard`.
+
+---
+
+## Payment Processing
+
+### **Payment**  
+**Route**: `POST /payment/auth/pay`  
+**Parameters** (FormData):
+- `phoneNumber` (string): User's phone number.
+- `amount` (string/number): Payment amount.
+- `reference` (string): Transaction reference.  
+
+**Behavior**:  
+- Requires authenticated token via cookies.
+- Sends payment request to backend.
+- Redirects to `/dashboard` after processing.
+
+---
+
+## NID Image Processing
+
+### **detectObjectsFromBase64**  
+**Endpoint**: External API (`https://api.landing.ai/v1/tools/agentic-object-detection`)  
+**Parameters**:
+- `base64ImageUrl` (string): Base64-encoded NID image.  
+
+**Behavior**:  
+- Detects profile picture bounding box using AI.
+- Returns coordinates `[x, y, width, height]`.
+
+---
+
+### **OCRImage**  
+**Model**: Google Gemini 2.0 Flash  
+**Parameters**:
+- `image` / `image1` (base64): NID images.  
+
+**Response Schema**:
+```ts
+{
+  isNID: boolean,
+  name: string,
+  fatherName: string,
+  motherName: string,
+  dob: string,
+  nid: string,
+  address: string,
+  blood_type: string,
+  box_2d_tx: number,
+  box_2d_ty: number,
+  box_2d_bx: number,
+  box_2d_by: number
+}
+```
+**Behavior**:  
+- Extracts structured data from Bangladeshi NID images.
+- Returns OCR results and profile picture bounding box.
+
+---
+
+## Data Prediction
+
+### **predict**  
+**Model**: Google Gemini 2.0 Flash  
+**Parameters**:
+- `yVal` (number[]): Array of Y-axis values.
+- `xVal` (any[]): Array of X-axis values.
+- `dataDetails` (string): Contextual description of data.  
+
+**Response Schema**:
+```ts
+{
+  xVal: number[],
+  yVal: number[]
+}
+```
+**Behavior**:  
+- Predicts next 10 values for X and Y axes using AI.
+
+---
+
+## Utility Functions
+
+### **Image Cropping** (`crop.tsx`)
+- `cropBase64Image(bbox, base64Image)`: Crops an image using bounding box coordinates.
+- `imageToBase64(file)`: Converts a `File` object to base64 string.
+
+---
+
+## Request Helpers (`req.tsx`)
+| Function | Method | Parameters | Description |
+|----------|--------|------------|-------------|
+| `post` | POST | `url`, `data` | Basic POST request. |
+| `cache_post` | POST | `url`, `data` | Cached POST with 30s revalidation. |
+| `get` | GET | `url`, `c` (cache flag) | Cached GET request. |
+| `post_with_token` | POST | `url`, `data` | Authenticated POST with JWT token. |
+| `get_with_token` | GET | `url`, `c` (cache flag) | Authenticated GET with token. |
+
+---
+
+## Environment Variables
+- `SERVER_URL`: Backend API base URL (e.g., `http://localhost:3000/api`).
+- `AGENTIC_API_KEY`: API key for Landing.ai object detection.
+
+---
+
+## Error Handling
+All functions return `{ error: string }` on failure. Authentication errors return `{ error: "Unauthorized" }`.
+# Backend API Documentation
+
+A server-side API for our app TrustWave (Financial System)  built with Hono.js, designed for user authentication, transaction management, and administrative operations. Supports JWT-based authentication, IP restrictions, and integrates with PostgreSQL.
 
 ---
 
