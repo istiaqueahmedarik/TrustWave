@@ -29,42 +29,42 @@ async function fetchBannedIPs(): Promise<IPRestrictionRule[]> {
 
 
 
-app.use(
-    '*',
-    ipRestriction(
-        getConnInfo,
-        {
-            denyList: await fetchBannedIPs(),
-        },
-        async (remote, c) => {
-            console.log(`Blocking access from ${remote.addr}`)
-            return c.text(`Blocking access from ${remote.addr}`, 403)
-        }
-    )
-)
+// app.use(
+//     '*',
+//     ipRestriction(
+//         getConnInfo,
+//         {
+//             denyList: await fetchBannedIPs(),
+//         },
+//         async (remote, c) => {
+//             console.log(`Blocking access from ${remote.addr}`)
+//             return c.text(`Blocking access from ${remote.addr}`, 403)
+//         }
+//     )
+// )
 
-app.use('*', createMiddleware(async (c, next) => {
-    const info = getConnInfo(c)
-    const ip = info.remote.address || ''
-    let val = await c.env.TRUST.get(ip.toString())
-    if (val) {
-        const timeDiff = new Date().getTime() - new Date(val).getTime()
-        console.log('timeDiff', timeDiff)
-        const validTime = 1000 * 10
-        if (timeDiff < validTime) {
-            return c.text('Too many requests', 429)
-        }
-    }
-    if (!val) {
-        await c.env.TRUST.put(ip.toString(), new Date().toISOString())
-    }
-    // const bot = isbot(c.req.header('User-Agent'))
-    // if (bot) {
-    //     return c.text('Bot detected', 403)
-    // }
-    console.log(ip, val)
-    await next()
-}))
+// app.use('*', createMiddleware(async (c, next) => {
+//     const info = getConnInfo(c)
+//     const ip = info.remote.address || ''
+//     let val = await c.env.TRUST.get(ip.toString())
+//     if (val) {
+//         const timeDiff = new Date().getTime() - new Date(val).getTime()
+//         console.log('timeDiff', timeDiff)
+//         const validTime = 1000 * 10
+//         if (timeDiff < validTime) {
+//             return c.text('Too many requests', 429)
+//         }
+//     }
+//     if (!val) {
+//         await c.env.TRUST.put(ip.toString(), new Date().toISOString())
+//     }
+//     const bot = isbot(c.req.header('User-Agent'))
+//     if (bot) {
+//         return c.text('Bot detected', 403)
+//     }
+//     console.log(ip, val)
+//     await next()
+// }))
 
 
 
@@ -91,7 +91,9 @@ app.get('/auth', async (c) => {
 
  */
 
-app.get('/user_list', async (c) => {
+
+
+app.get('/auth/user_list', async (c) => {
     const connectionString = c.env.DATABASE_URL || ''
     console.log('connectionString', connectionString)
     const sql = postgres(connectionString)
@@ -124,6 +126,20 @@ order by created_at`
             message: e,
         })
     }
+})
+
+
+app.post('/auth/ban_user', async (c) => {
+    const connectionString = c.env.DATABASE_URL || ''
+    const sql = postgres(connectionString)
+
+    const { banIp } = await c.req.json();
+
+    const res = await sql`INSERT INTO ip_tracink (ip_address) VALUES (${banIp})`
+    return c.json({
+        status: 'success',
+        data: res
+    })
 })
 
 

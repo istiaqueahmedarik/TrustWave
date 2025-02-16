@@ -29,42 +29,42 @@ async function fetchBannedIPs(): Promise<IPRestrictionRule[]> {
 
 
 
-app.use(
-    '*',
-    ipRestriction(
-        getConnInfo,
-        {
-            denyList: await fetchBannedIPs(),
-        },
-        async (remote, c) => {
-            console.log(`Blocking access from ${remote.addr}`)
-            return c.text(`Blocking access from ${remote.addr}`, 403)
-        }
-    )
-)
+// app.use(
+//     '*',
+//     ipRestriction(
+//         getConnInfo,
+//         {
+//             denyList: await fetchBannedIPs(),
+//         },
+//         async (remote, c) => {
+//             console.log(`Blocking access from ${remote.addr}`)
+//             return c.text(`Blocking access from ${remote.addr}`, 403)
+//         }
+//     )
+// )
 
-app.use('*', createMiddleware(async (c, next) => {
-    const info = getConnInfo(c)
-    const ip = info.remote.address || ''
-    let val = await c.env.TRUST.get(ip.toString())
-    if (val) {
-        const timeDiff = new Date().getTime() - new Date(val).getTime()
-        console.log('timeDiff', timeDiff)
-        const validTime = 1000 * 10
-        if (timeDiff < validTime) {
-            return c.text('Too many requests', 429)
-        }
-    }
-    if (!val) {
-        await c.env.TRUST.put(ip.toString(), new Date().toISOString())
-    }
-    // const bot = isbot(c.req.header('User-Agent'))
-    // if (bot) {
-    //     return c.text('Bot detected', 403)
-    // }
-    console.log(ip, val)
-    await next()
-}))
+// app.use('*', createMiddleware(async (c, next) => {
+//     const info = getConnInfo(c)
+//     const ip = info.remote.address || ''
+//     let val = await c.env.TRUST.get(ip.toString())
+//     if (val) {
+//         const timeDiff = new Date().getTime() - new Date(val).getTime()
+//         console.log('timeDiff', timeDiff)
+//         const validTime = 1000 * 10
+//         if (timeDiff < validTime) {
+//             return c.text('Too many requests', 429)
+//         }
+//     }
+//     if (!val) {
+//         await c.env.TRUST.put(ip.toString(), new Date().toISOString())
+//     }
+//     const bot = isbot(c.req.header('User-Agent'))
+//     if (bot) {
+//         return c.text('Bot detected', 403)
+//     }
+//     console.log(ip, val)
+//     await next()
+// }))
 
 
 

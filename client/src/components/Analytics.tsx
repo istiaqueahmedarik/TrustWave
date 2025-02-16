@@ -31,7 +31,7 @@ export default async function Analytics() {
     }
     console.log(pred);
     return (
-        <div className="max-w-2xl p-4 flex flex-row gap-5">
+        <div className="max-w-2xl p-4 flex flex-col xl:flex-row gap-5">
             <PerformanceChart data={data} text={"Main Cost"} total={totExpense} />
             <PerformanceChart data={predData} text={"Prediction"} total={sum} />
         </div>

@@ -1,5 +1,5 @@
 import { Sidebar, SidebarContent, SidebarFooter } from '@/components/ui/sidebar'
-import { Check, Projector, User } from 'lucide-react'
+import { AlertCircle, Check, Projector, User } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from './ui/button'
 
@@ -25,6 +25,12 @@ export function AdminSidebar() {
           <Button className="w-full bg-gray-200 text-black hover:text-white">
             <Projector size={24} />
             Revenue
+          </Button>
+        </Link>
+        <Link href="/admin_dashboard/ban">
+          <Button className="w-full bg-gray-200 text-black hover:text-white">
+            <AlertCircle size={24} />
+            Ban
           </Button>
         </Link>
       </SidebarContent>

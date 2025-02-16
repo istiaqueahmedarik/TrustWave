@@ -125,5 +125,5 @@ export async function Login(prevState: any, formData: FormData) {
         const cookieStore = await cookies();
         cookieStore.set("token", res.token);
     }
-    redirect("/");
+    redirect("/dashboard");
 }
